@@ -5,6 +5,7 @@ import com.gcp.agent25.common.core.dto.error.ErrorPayload;
 import com.gcp.agent25.common.core.dto.error.ErrorsPayload;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -18,6 +19,7 @@ import java.util.List;
 
 import static com.gcp.agent25.common.core.constant.ApiConstant.STATUS_ERROR;
 import static com.gcp.agent25.common.core.exception.CommonErrorMessage.*;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 
 @ControllerAdvice
@@ -32,6 +34,17 @@ public class CommonExceptionHandler {
         CommonErrorMessage err = ex.getErrorMessage();
         return ResponseEntity.status(err.getHttpStatus()).body(ResponsePayload.<ErrorsPayload>builder()
                 .status(STATUS_ERROR).result(ErrorsPayload.builder().errors(List.of(getError(err))).build()).build());
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ResponsePayload<ErrorsPayload>> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex) {
+        Throwable cause = ex.getMostSpecificCause();
+        ErrorPayload errorPayload = getError(FIELD_VALIDATION_ERROR);
+        if (cause instanceof IllegalArgumentException) {
+            errorPayload.setErrorMessage(cause.getMessage());
+        }
+        return ResponseEntity.status(BAD_REQUEST).body(ResponsePayload.<ErrorsPayload>builder()
+                .status(STATUS_ERROR).result(ErrorsPayload.builder().errors(List.of(errorPayload)).build()).build());
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -50,7 +63,7 @@ public class CommonExceptionHandler {
             errorPayloadList.add(err);
         });
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponsePayload.<ErrorsPayload>builder()
+        return ResponseEntity.status(BAD_REQUEST).body(ResponsePayload.<ErrorsPayload>builder()
                 .status(STATUS_ERROR).result(ErrorsPayload.builder().errors(errorPayloadList).build()).build());
     }
 
@@ -61,7 +74,7 @@ public class CommonExceptionHandler {
         err.setErrorMessage(ex.getParameterName() + " is required.");
 
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponsePayload.<ErrorsPayload>builder()
+        return ResponseEntity.status(BAD_REQUEST).body(ResponsePayload.<ErrorsPayload>builder()
                 .status(STATUS_ERROR).result(ErrorsPayload.builder().errors(List.of(err)).build()).build());
     }
 
