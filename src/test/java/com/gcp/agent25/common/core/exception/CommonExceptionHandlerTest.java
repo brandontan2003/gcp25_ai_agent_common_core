@@ -52,7 +52,7 @@ public class CommonExceptionHandlerTest {
         }
 
         @GetMapping(MISSING_PARAM_URL)
-        public String missingParam(@RequestParam String requiredParam) {
+        public String missingParam(@Valid @RequestParam(name = "requiredParam") String requiredParam) {
             return "Valid";
         }
 
