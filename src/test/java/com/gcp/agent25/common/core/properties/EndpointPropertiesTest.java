@@ -8,7 +8,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class EndpointPropertiesTest {
 
     private static EndpointProperties getEndpointProperties(String uri) {
-        return EndpointProperties.builder().scheme("http").host("api.example.com").port(5000).uri(uri).build();
+        EndpointProperties endpointProperties = new EndpointProperties();
+        endpointProperties.setScheme("http");
+        endpointProperties.setHost("api.example.com");
+        endpointProperties.setPort(5000);
+        endpointProperties.setUri(uri);
+        return endpointProperties;
     }
 
     @Test

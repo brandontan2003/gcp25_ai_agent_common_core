@@ -41,8 +41,15 @@ class WebClientServiceTest {
     @InjectMocks
     private WebClientService webClientService;
 
-    private static final String URL =
-            EndpointProperties.builder().scheme("http").host("api.example.com").port(5000).uri("/data").build().toUrl();
+    private static EndpointProperties getEndpointProperties() {
+        EndpointProperties endpointProperties = new EndpointProperties();
+        endpointProperties.setScheme("http");
+        endpointProperties.setHost("api.example.com");
+        endpointProperties.setPort(5000);
+        endpointProperties.setUri("/data");
+        return endpointProperties;
+    }
+    private static final String URL = getEndpointProperties().toUrl();
     private static final String RESPONSE_BODY = "Success";
     private static final ResponseEntity<String> MOCK_RESPONSE = new ResponseEntity<>(RESPONSE_BODY, HttpStatus.OK);
     private static final ParameterizedTypeReference<String> RESPONSE_TYPE = new ParameterizedTypeReference<>() {};

@@ -1,10 +1,8 @@
 package com.gcp.agent25.common.core.properties;
 
-import lombok.Builder;
 import lombok.Data;
 
 @Data
-@Builder
 public class EndpointProperties {
 
     private String scheme;
