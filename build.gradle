@@ -65,8 +65,8 @@ publishing {
             def releaseURL = "artifactregistry://asia-southeast1-maven.pkg.dev/gcp-25-adk-ai-agent/ai-agent-common-core"
             url releaseURL
             credentials {
-                username = "oauth2accesstoken"
-                password = System.getenv("GCP25_ACCESS_TOKEN")
+                username = "_json_key"
+                password = file(System.getenv("GOOGLE_APPLICATION_CREDENTIALS")).text
             }
         }
     }
