@@ -15,7 +15,7 @@ This module centralizes common logic, configurations, and utilities used by the 
 
 ## 🧩 Purpose
 
-This repo includes:
+This repository includes:
 
 - Shared utilities (e.g. logging, exception handling, validation)
 - Common DTOs/models across microservices
@@ -34,9 +34,10 @@ It ensures consistency and reduces duplication across services.
 - Gradle 6.x+
 - Access to Google Cloud with the required credentials
 
-### Setup
+### 🛠️ Installation
 
 ```bash
 git clone https://github.com/brandontan2003/gcp25_ai_agent_common_core.git
 cd gcp25_ai_agent_common_core
 ./gradlew clean build publishToMavenLocal
+```
